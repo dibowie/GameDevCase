@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController), typeof(CapsuleCollider))]
@@ -14,6 +15,22 @@ public class PlayerController : MonoBehaviour
     {
         _characterController = GetComponent<CharacterController>();
     }
+
+    private void OnEnable()
+    {
+        PlayerTriggerController.OnDied += PlayerTriggerController_OnDied;
+    }
+
+    private void OnDisable()
+    {
+        PlayerTriggerController.OnDied -= PlayerTriggerController_OnDied;
+    }
+
+    private void PlayerTriggerController_OnDied()
+    {
+        playerAnimator.PlayDeathAnimation();
+    }
+
     private void Update()
     {
         MovePlayer();

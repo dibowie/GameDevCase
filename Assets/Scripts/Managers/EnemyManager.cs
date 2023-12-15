@@ -1,5 +1,5 @@
+using Cinemachine;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class EnemyManager : Singleton<EnemyManager>
 {
@@ -8,32 +8,49 @@ public class EnemyManager : Singleton<EnemyManager>
     [SerializeField] private float spawnRadius;
     public Transform target;
 
-    private TimeCounter _timeCounter;
     private int _enemySpawnTimer = 5;
+    private TimeCounter _timeCounter;
+
+    public float spawnRangeX = 40f;
+    public float spawnRangeY = 40f;
+
     void Start()
     {
-        SpawnEnemies();
         _timeCounter = new TimeCounter(_enemySpawnTimer);
     }
 
-    private void Update()
+    void Update()
     {
         if (_timeCounter.IsTickFinished(Time.deltaTime))
         {
             SpawnEnemies();
         }
     }
+
     void SpawnEnemies()
     {
         for (int i = 0; i < numberOfEnemies; i++)
         {
-            Vector3 randomSpawnPosition = Random.insideUnitSphere * spawnRadius;
-            randomSpawnPosition.y = 0; 
-
-            GameObject newEnemy = Instantiate(enemyPrefab, randomSpawnPosition, Quaternion.identity);
-            newEnemy.transform.parent = transform;
-            EnemyController enemyController = newEnemy.GetComponent<EnemyController>();
-            enemyController.SetTarget(target);
+            Vector3 spawnPosition = CalculateSpawnPosition(Camera.main);
+            InstantiateEnemy(spawnPosition);
         }
+    }
+
+    private Vector3 CalculateSpawnPosition(Camera camera)
+    {
+        float halfWidth = camera.aspect * camera.orthographicSize;
+        float halfHeight = camera.orthographicSize;
+
+        float spawnX = Random.Range(camera.transform.position.x + halfWidth, camera.transform.position.x + halfWidth + spawnRangeX);
+        float spawnY = Random.Range(camera.transform.position.y - halfHeight - spawnRangeY, camera.transform.position.y + halfHeight + spawnRangeY);
+
+        return new Vector3(spawnX, 0, spawnY);
+    }
+
+    private void InstantiateEnemy(Vector3 spawnPosition)
+    {
+        GameObject newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity, transform);
+        EnemyController enemyController = newEnemy.GetComponent<EnemyController>();
+        enemyController.SetTarget(target);
     }
 }

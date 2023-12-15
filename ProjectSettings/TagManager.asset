@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Boomerang
   - EnemyProjectile
+  - Coin
   layers:
   - Default
   - TransparentFX
@@ -43,4 +44,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Top
+    uniqueID: 1618380879
+    locked: 0
+  - name: Bottom
+    uniqueID: 717364747
     locked: 0

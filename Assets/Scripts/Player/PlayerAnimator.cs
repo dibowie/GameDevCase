@@ -16,22 +16,23 @@ public class PlayerAnimator : MonoBehaviour
             PlayRunAnimation();
             _animator.transform.forward = move.normalized;
         }
-        else
+        if (move.magnitude <= 0)
         {
             PlayIdleAnimation();
+            _animator.transform.forward = move.normalized;
         }
     }
 
     private void PlayRunAnimation()
     {
-        _animator.Play("Run");
+        _animator.SetBool("isRunning" , true);
     }
     private void PlayIdleAnimation()
     {
-        _animator.Play("Idle");
+        _animator.SetBool("isRunning" , false);
     }
-    private void PlayDeathAnimation()
+    public void PlayDeathAnimation()
     {
-        _animator.Play("Death");
+        _animator.SetBool("isDead" , true);
     }
 }
