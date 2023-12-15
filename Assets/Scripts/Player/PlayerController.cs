@@ -26,6 +26,5 @@ public class PlayerController : MonoBehaviour
 
         playerAnimator.ManageAnimations(_moveVector);
         _characterController.Move(_moveVector);
-            
     }
 }
