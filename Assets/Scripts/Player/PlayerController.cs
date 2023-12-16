@@ -17,11 +17,16 @@ public class PlayerController : MonoBehaviour
     private Vector3 moveVector;
     private GameStateManager gameStateManager;
     
-    private void Awake()
+    private void Start()
     {
         Instance = this;
         characterController = GetComponent<CharacterController>();
         gameStateManager = GameStateManager.Instance;
+
+        if (gameStateManager == null)
+        {
+            Debug.LogError("GameStateManager is not assigned or not found.");
+        }
     }
 
     private void OnEnable()
