@@ -1,3 +1,4 @@
+using Lean.Pool;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
@@ -68,29 +69,20 @@ public class EnemyController : MonoBehaviour
         Quaternion toRotation = Quaternion.LookRotation(distance, Vector3.up);
         transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
     }
-
-    [ContextMenu("shoot")]
+    
     public void ShootAtPlayer()
     {
         enemyAnimator.SetBool("canShoot",true);
-        GameObject bulletObj = Instantiate(projectile, spawnPoint.transform.position ,spawnPoint.transform.rotation );
+       // GameObject bulletObj = Instantiate(projectile, spawnPoint.transform.position ,spawnPoint.transform.rotation);
+        var bulletObj = LeanPool.Spawn(projectile, spawnPoint.transform.position, spawnPoint.transform.rotation,gameObject.transform);
         bulletObj.GetComponent<EnemyProjectile>().InitBullet(1,spawnPoint,transform);
-
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Boomerang"))
         {
-            Destroy(gameObject);
-        }
-    }
-
-    private void OnCollisionStay(Collision other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            Debug.Log("staying");
+            LeanPool.Despawn(this);
         }
     }
 }

@@ -13,4 +13,5 @@ public class Coin : MonoBehaviour
     {
         transform.Rotate(0,rotationSpeed,0);
     }
+    
 }

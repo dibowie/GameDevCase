@@ -1,23 +1,22 @@
 using System;
 using DG.Tweening;
+using Lean.Pool;
 using UnityEngine;
 
 public class Boomerang : MonoBehaviour
 {
-    [SerializeField] private float rotationSpeed = 720f; 
-    [SerializeField] private float rotationDuration = 1f; 
+    [SerializeField] private float rotationSpeed = 3f;
 
     public static event Action OnEnemyDied;
     private void Start()
     {
         Rotate();
+        LeanPool.Despawn(this,5);
     }
 
     private void Rotate()
     {
-        transform.DORotate(new Vector3(0f, 0f, rotationSpeed), rotationDuration, RotateMode.FastBeyond360)
-            .SetEase(Ease.Linear)
-            .SetLoops(-1); 
+        transform.Rotate(rotationSpeed,0,0);
     }
 
     private void OnTriggerEnter(Collider other)

@@ -98,6 +98,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 3
+  coin: {fileID: 0}
+  coinCount: 50
+  sphereRadius: 30
 --- !u!135 &4429394147686790567
 SphereCollider:
   m_ObjectHideFlags: 0

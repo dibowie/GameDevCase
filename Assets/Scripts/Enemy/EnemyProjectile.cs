@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Lean.Pool;
 using UnityEngine;
 
 public class EnemyProjectile : MonoBehaviour
@@ -19,7 +20,7 @@ public class EnemyProjectile : MonoBehaviour
     }
     private void Start()
     {
-        // Destroy(gameObject,3);
+        LeanPool.Despawn(this,4);
     }
     
     public void InitBullet(float bulletDamage, Transform gunPoint,Transform sourceObject)

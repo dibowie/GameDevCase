@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController), typeof(CapsuleCollider))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : Singleton<PlayerController>
 {
     [SerializeField] private VirtualJoystick virtualJoystick;
     [SerializeField] private float moveSpeed; 
@@ -11,8 +11,9 @@ public class PlayerController : MonoBehaviour
     private CharacterController _characterController;
     private Vector3 _moveVector;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _characterController = GetComponent<CharacterController>();
     }
 

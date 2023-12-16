@@ -1,4 +1,5 @@
 using System;
+using Lean.Pool;
 using UnityEngine;
 
 public class PlayerTriggerController : MonoBehaviour
@@ -22,7 +23,8 @@ public class PlayerTriggerController : MonoBehaviour
     {
         if (other.transform.CompareTag("EnemyProjectile"))
         {
-            other.gameObject.SetActive(false);
+          //  other.gameObject.SetActive(false);
+            LeanPool.Despawn(other.gameObject);
             TakeDamage();
         }
         if (other.transform.CompareTag("Enemy"))
@@ -34,7 +36,7 @@ public class PlayerTriggerController : MonoBehaviour
         if (other.transform.CompareTag("Coin"))
         {
             OnCoinCollected?.Invoke();
-            other.gameObject.SetActive(false);
+            LeanPool.Despawn(other.gameObject);
         }
     }
 
