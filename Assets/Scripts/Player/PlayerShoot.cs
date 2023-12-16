@@ -1,7 +1,7 @@
 using System;
+using DG.Tweening;
 using Lean.Pool;
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class PlayerShoot : MonoBehaviour
 { 
@@ -10,7 +10,7 @@ public class PlayerShoot : MonoBehaviour
     [SerializeField] private float attackRange = 12f;
     
     private TimeCounter _timeCounter;
-    private float _shootTimer = 2f;
+    private float _shootTimer = 1f;
     
 
     private void Start()
@@ -42,8 +42,7 @@ public class PlayerShoot : MonoBehaviour
     }
     void LaunchBoomerang(Vector3 targetPosition)
     {
-       var boomerang = LeanPool.Spawn(boomerangPrefab, transform.position + new Vector3(0, 2, 0), Quaternion.identity,transform.GetChild(0));
-        Vector3 direction = (targetPosition - transform.position).normalized;
-        boomerang.GetComponent<Rigidbody>().AddForce(direction * 20f, ForceMode.Impulse);
+       var boomerang = LeanPool.Spawn(boomerangPrefab, transform.position, Quaternion.identity,transform.GetChild(0));
+       boomerang.GetComponent<Rigidbody>().transform.DOJump(targetPosition, 5f, 1, 0.5f);
     }
 }

@@ -1,12 +1,10 @@
-using Cinemachine;
 using Lean.Pool;
 using UnityEngine;
 
-public class EnemyManager : Singleton<EnemyManager>
+public class EnemyManager : MonoBehaviour
 {
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private int numberOfEnemies;
-   // [SerializeField] private float spawnRadius;
     public Transform target;
 
     private int _enemySpawnTimer = 5;
@@ -43,17 +41,21 @@ public class EnemyManager : Singleton<EnemyManager>
     {
         float halfWidth = camera.aspect * camera.orthographicSize;
         float halfHeight = camera.orthographicSize;
-
-        float spawnX = Random.Range(camera.transform.position.x + halfWidth, camera.transform.position.x + halfWidth + spawnRangeX);
+        
+        float sphereRadius = Mathf.Max(spawnRangeX, spawnRangeY);
+        
+        Vector2 randomCircle = Random.insideUnitCircle * sphereRadius;
+        
         float spawnY = Random.Range(camera.transform.position.y - halfHeight - spawnRangeY, camera.transform.position.y + halfHeight + spawnRangeY);
 
-        return new Vector3(spawnX, 0, spawnY);
+        
+        Vector3 spawnPosition = new Vector3(randomCircle.x + camera.transform.position.x + halfWidth, 0, spawnY);
+        return spawnPosition;
     }
 
     private void InstantiateEnemy(Vector3 spawnPosition)
     {
-       // GameObject newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity, transform);
-       var newEnemy = LeanPool.Spawn(enemyPrefab, spawnPosition, Quaternion.identity, transform);
+        var newEnemy = LeanPool.Spawn(enemyPrefab, spawnPosition, Quaternion.identity, transform);
         EnemyController enemyController = newEnemy.GetComponent<EnemyController>();
         enemyController.SetTarget(target);
     }

@@ -3,36 +3,39 @@ using UnityEngine;
 public class PlayerAnimator : MonoBehaviour
 {
     private Animator _animator;
-    
+
+    private const string IsRunningParam = "isRunning";
+    private const string IsDeadParam = "isDead";
+
     private void Awake()
     {
         _animator = GetComponentInChildren<Animator>();
     }
-    
+
     public void ManageAnimations(Vector3 move)
     {
         if (move.magnitude > 0)
         {
-            PlayRunAnimation();
-            _animator.transform.forward = move.normalized;
+            SetAnimatorParameter(IsRunningParam, true);
         }
-        if (move.magnitude <= 0)
+        else
         {
-            PlayIdleAnimation();
-            _animator.transform.forward = move.normalized;
+            SetAnimatorParameter(IsRunningParam, false);
         }
+
+        _animator.transform.forward = move.normalized;
     }
 
-    private void PlayRunAnimation()
-    {
-        _animator.SetBool("isRunning" , true);
-    }
-    private void PlayIdleAnimation()
-    {
-        _animator.SetBool("isRunning" , false);
-    }
     public void PlayDeathAnimation()
     {
-        _animator.SetBool("isDead" , true);
+        SetAnimatorParameter(IsDeadParam, true);
+    }
+
+    private void SetAnimatorParameter(string paramName, bool value)
+    {
+        if (_animator != null)
+        {
+            _animator.SetBool(paramName, value);
+        }
     }
 }

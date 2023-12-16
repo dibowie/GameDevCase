@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI coinCount;
     private int _kill;
     private int _coin;
-    
+    private const string CoinCountKey = "CoinCount";
     private void OnEnable()
     {
         Boomerang.OnEnemyDied += Boomerang_OnEnemyDied;
@@ -22,18 +23,23 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        _coin = PlayerPrefs.GetInt(CoinCountKey, 0);
+    }
+
+    private void Update()
+    {
         UpdateUI();
     }
 
     private void Boomerang_OnEnemyDied()
     {
         _kill++;
-        UpdateUI();
     }
     private void PlayerTriggerController_OnCoinCollected()
     {
         _coin++;
-        UpdateUI();
+        PlayerPrefs.SetInt(CoinCountKey, _coin);
+        PlayerPrefs.Save();
     }
     
 

@@ -23,17 +23,19 @@ public class PlayerTriggerController : MonoBehaviour
     {
         if (other.transform.CompareTag("EnemyProjectile"))
         {
-          //  other.gameObject.SetActive(false);
             LeanPool.Despawn(other.gameObject);
             TakeDamage();
         }
-        if (other.transform.CompareTag("Enemy"))
+        IKillable iKillable = other.GetComponent<IKillable>();
+        if (iKillable != null)
         {
             Debug.Log("EnemyTouched");
             //player die
             OnDied?.Invoke();
         }
-        if (other.transform.CompareTag("Coin"))
+
+        ICollectable iCollectable = other.GetComponent<ICollectable>();
+        if (iCollectable != null)
         {
             OnCoinCollected?.Invoke();
             LeanPool.Despawn(other.gameObject);
